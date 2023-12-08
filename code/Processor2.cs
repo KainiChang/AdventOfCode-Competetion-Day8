@@ -22,7 +22,8 @@ public class Processor2
             //push the char back to the tail of the list
             instructions.Add(instruction);
             stepCount++;
-
+        Console.WriteLine("stepCount: " + stepCount
+        + "---- " + string.Join(",", arrivedAts));
             if (arrivedAts.All(x => x.EndsWith('Z')))
             {
                 allArriveAtZ = true;
@@ -58,7 +59,7 @@ public class Processor2
                 if (map.Item1 == startsAt)
                 {
                     arrivedAt = instruction == 'L' ? map.Item2 : map.Item3;
-                    Console.WriteLine(" instruction: " + instruction + " arrivedAt: " + arrivedAt);
+                    // Console.WriteLine(" instruction: " + instruction + " arrivedAt: " + arrivedAt);
                     arrivedAts.Add(arrivedAt);
                     break;
                 }
