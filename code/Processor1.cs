@@ -25,7 +25,6 @@ public class Processor1
             //push the char back to the tail of the list
             instructions.Add(instruction);
             // Console.WriteLine(instruction.ToString(), arrivedAt);
-            //push the map back to the tail of the list
             stepCount++;
         }
 
