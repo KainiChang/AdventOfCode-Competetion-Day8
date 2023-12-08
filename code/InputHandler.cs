@@ -32,27 +32,39 @@ public class InputHandler
         // }
         return heightMap;
     }
-    public static List<(string,long)> ReadInputLines(string input)
+    public static List<char> ReadInputInstruction(string input)
     {
-        List<(string, long)> pairs = new List<(string, long)>();
+        // Split the input into rows
+        string[] lines = input.Split(new[] { "\r\n", "\n\n" }, StringSplitOptions.RemoveEmptyEntries);
+
+        // store line[0] as a char list
+        List<char> instructions = new List<char>();
+        foreach (char c in lines[0])
+        {
+            instructions.Add(c);
+        }
+
+        return instructions;
+    }
+    public static List<(string, string,string)> ReadInputMap(string input)
+    {
+        List<(string, string,string)> maps = new List<(string, string,string)>();
 
         // Split the input into rows
-        string[] lines = input.Split(new [] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-        foreach (var line in lines)
+        string[] lines = input.Split(new[] { "\r\n\r\n", "\n\n\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+        string[] mapStrings = lines[1].Split(new[] { "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+
+        foreach (var mapString in mapStrings)
         {
-            // Split each line into the string part and the integer part
-            string[] parts = line.Trim().Split(' ');
-            if (parts.Length == 2 && long.TryParse(parts[1], out long number))
-            {
-                // Add the tuple to the list
-                pairs.Add((parts[0], number));
-            }
+            // Split each line into the three string parts
+            string[] parts= mapString.Split(new[] { " ", "=","(",",",")" }, StringSplitOptions.RemoveEmptyEntries);
+
+        if (parts.Length == 3)
+        {
+            maps.Add((parts[0], parts[1], parts[2]));
         }
-        // Testing the output
-        // foreach (var pair in pairs)
-        // {
-        //     Console.WriteLine($"String: {pair.Item1}, Number: {pair.Item2}");
-        // }
-        return pairs;
+        }
+
+        return maps;
     }
 }

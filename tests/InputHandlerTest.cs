@@ -4,22 +4,36 @@ namespace tests;
 public class InputHandlerTest : code.InputHandler
 {
     [TestMethod]
-    public void ReadInputListTest()
+    public void ReadInputInstructionsTest()
     {
-        string input = @"32T3K 765
-T55J5 684
-KK677 28
-KTJJT 220
-QQQJA 483";
-        List<(string, long)> expected = new List<(string, long)>()
-        {
-            ("32T3K", 765),
-            ("T55J5", 684),
-            ("KK677", 28),
-            ("KTJJT", 220),
-            ("QQQJA", 483)
-        };
-        List<(string, long)>  actual = code.InputHandler.ReadInputLines(input);
+        string input = @"RL
+
+AAA = (BBB, CCC)
+BBB = (DDD, EEE)
+CCC = (ZZZ, GGG)
+DDD = (DDD, DDD)
+EEE = (EEE, EEE)
+GGG = (GGG, GGG)
+ZZZ = (ZZZ, ZZZ)";
+         List<char> expected = ['R', 'L'];
+        List<char>  actual = code.InputHandler.ReadInputInstruction(input);
+        CollectionAssert.AreEqual(expected, actual);
+
+    }
+        [TestMethod]
+    public void ReadInputMapTest()
+    {
+        string input = @"RL
+
+AAA = (BBB, CCC)
+BBB = (DDD, EEE)
+CCC = (ZZZ, GGG)
+DDD = (DDD, DDD)
+EEE = (EEE, EEE)
+GGG = (GGG, GGG)
+ZZZ = (ZZZ, ZZZ)";
+        List<(string,string, string)> expected = [("AAA","BBB","CCC"),("BBB","DDD","EEE"),("CCC","ZZZ","GGG"),("DDD","DDD","DDD"),("EEE","EEE","EEE"),("GGG","GGG","GGG"),("ZZZ","ZZZ","ZZZ")];
+        List<(string,string, string)>  actual = code.InputHandler.ReadInputMap(input);
         CollectionAssert.AreEqual(expected, actual);
 
     }
