@@ -6,58 +6,78 @@ public class Processor2
         List<char> instructions = InputHandler.ReadInputInstruction(input);
         Dictionary<string, (string, string)> maps = InputHandler.ReadInputMap(input);
 
+        Dictionary<string, List<long>> stepCountsForTags = new Dictionary<string, List<long>>();
         long stepCount = 0;
         List<string> startsAts = GetAllNodesEndWithA(maps);
 
-        bool allArriveAtZ = false;
-        while (!allArriveAtZ)
+        // bool allArriveAtZ = false;
+        foreach (var startsAt in startsAts)
         {
-            //pop a char from the list
-            char instruction = instructions[0];
-            //remove the char from the list
-            instructions.RemoveAt(0);
-
-            List<string> arrivedAts = GetArrivedAts(startsAts, instruction, maps);
-
-            //push the char back to the tail of the list
-            instructions.Add(instruction);
-            stepCount++;
-        Console.WriteLine("stepCount: " + stepCount
-        + "---- " + string.Join(",", arrivedAts));
-            if (arrivedAts.All(x => x.EndsWith('Z')))
+            string startTag = startsAt;
+            string currentStartAt = startsAt;
+            stepCount = 0;
+            while (stepCount < 1000000)
             {
-                allArriveAtZ = true;
-            }
+                //pop a char from the list
+                char instruction = instructions[0];
+                // Console.WriteLine("instruction: " + instruction);
+                //remove the char from the list
+                instructions.RemoveAt(0);
+                string arrivedAt = "";
+                stepCount = stepCount + 1;
 
-            startsAts = arrivedAts;
+                arrivedAt = GetArrivedAts(currentStartAt, instruction, maps);
+                // Console.WriteLine("stepCount: " + stepCount
+                // + "---- " + string.Join(",", arrivedAt));
+                if (arrivedAt.EndsWith('Z'))
+                {
+                    if (!stepCountsForTags.ContainsKey(startTag))
+                    {
+                        stepCountsForTags[startTag] = new List<long>();
+                    }
+                    stepCountsForTags[startTag].Add(stepCount);
+                }
+                //push the char back to the tail of the list
+                instructions.Add(instruction);
+                currentStartAt = arrivedAt;
+                //if the count of stepCountsForTags is larger than 30, break
+                if (stepCountsForTags.ContainsKey(startTag) && stepCountsForTags[startTag].Count > 10)
+                {
+                    break;
+                }
+
+            }
+        }
+        // Print the results
+        foreach (var item in stepCountsForTags)
+        {
+            Console.WriteLine($"{item.Key}: [{string.Join(", ", item.Value)}]");
         }
 
         return stepCount;
     }
-public static List<string> GetAllNodesEndWithA(Dictionary<string, (string, string)> maps)
-{
-    List<string> nodes = new List<string>();
-    foreach (var map in maps)
+    public static List<string> GetAllNodesEndWithA(Dictionary<string, (string, string)> maps)
     {
-        if (map.Key.EndsWith('A'))
+        List<string> nodes = new List<string>();
+        foreach (var map in maps)
         {
-            nodes.Add(map.Key);
+            if (map.Key.EndsWith('A'))
+            {
+                nodes.Add(map.Key);
+            }
         }
+        return nodes;
     }
-    return nodes;
-}
 
-   public static List<string> GetArrivedAts(List<string> startsAts, char instruction, Dictionary<string, (string, string)> maps)
-{
-    var arrivedAts = new List<string>();
-    foreach (var startsAt in startsAts)
+    public static string GetArrivedAts(string startsAt, char instruction, Dictionary<string, (string, string)> maps)
     {
+        string arrivedAt = "";
+
         if (maps.TryGetValue(startsAt, out var mapping))
         {
-            string arrivedAt = instruction == 'L' ? mapping.Item1 : mapping.Item2;
-            arrivedAts.Add(arrivedAt);
+            arrivedAt = instruction == 'L' ? mapping.Item1 : mapping.Item2;
         }
+
+        return arrivedAt;
     }
-    return arrivedAts;
-}
 }

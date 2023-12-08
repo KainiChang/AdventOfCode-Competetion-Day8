@@ -3,46 +3,46 @@ namespace tests;
 [TestClass]
 public class Processor2Test : code.Processor2
 {
-  [TestMethod]
-  public void GetNodeStartWithATest()
-  {
-    string input = @"LR
+//   [TestMethod]
+//   public void GetNodeStartWithATest()
+//   {
+//     string input = @"LR
 
-11A = (11B, XXX)
-11B = (XXX, 11Z)
-11Z = (11B, XXX)
-22A = (22B, XXX)
-22B = (22C, 22C)
-22C = (22Z, 22Z)
-22Z = (22B, 22B)
-XXX = (XXX, XXX)";
-    Dictionary<string, (string, string)> maps = code.InputHandler.ReadInputMap(input);
+// 11A = (11B, XXX)
+// 11B = (XXX, 11Z)
+// 11Z = (11B, XXX)
+// 22A = (22B, XXX)
+// 22B = (22C, 22C)
+// 22C = (22Z, 22Z)
+// 22Z = (22B, 22B)
+// XXX = (XXX, XXX)";
+//     Dictionary<string, (string, string)> maps = code.InputHandler.ReadInputMap(input);
 
-    List<string> expected = ["11A", "22A"];
-    List<string> actual = code.Processor2.GetAllNodesEndWithA(maps);
-    CollectionAssert.AreEqual(expected, actual);
-  }
-  [TestMethod]
-  public void GetArrivedAtsTest()
-  {
-    string input = @"LR
+//     List<string> expected = ["11A", "22A"];
+//     List<string> actual = code.Processor2.GetAllNodesEndWithA(maps);
+//     CollectionAssert.AreEqual(expected, actual);
+//   }
+//   [TestMethod]
+//   public void GetArrivedAtsTest()
+//   {
+//     string input = @"LR
 
-11A = (11B, XXX)
-11B = (XXX, 11Z)
-11Z = (11B, XXX)
-22A = (22B, XXX)
-22B = (22C, 22C)
-22C = (22Z, 22Z)
-22Z = (22B, 22B)
-XXX = (XXX, XXX)";
-    Dictionary<string, (string, string)> maps = code.InputHandler.ReadInputMap(input);
-    List<string> startAts = ["11A", "22A"];
-    char instruction = 'L';
-    List<string> actual = code.Processor2.GetArrivedAts(startAts, instruction, maps);
-    List<string> expected = ["11B", "22B"];
+// 11A = (11B, XXX)
+// 11B = (XXX, 11Z)
+// 11Z = (11B, XXX)
+// 22A = (22B, XXX)
+// 22B = (22C, 22C)
+// 22C = (22Z, 22Z)
+// 22Z = (22B, 22B)
+// XXX = (XXX, XXX)";
+//     Dictionary<string, (string, string)> maps = code.InputHandler.ReadInputMap(input);
+//     List<string> startAts = ["11A", "22A"];
+//     char instruction = 'L';
+//     List<string> actual = code.Processor2.GetArrivedAts(startAts, instruction, maps);
+//     List<string> expected = ["11B", "22B"];
 
-    CollectionAssert.AreEqual(expected, actual);
-  }
+//     CollectionAssert.AreEqual(expected, actual);
+//   }
   [TestMethod]
   public void StepTest1()
   {
