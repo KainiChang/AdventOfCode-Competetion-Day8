@@ -4,7 +4,7 @@ public class Processor2
     public static long Process(string input)
     {
         List<char> instructions = InputHandler.ReadInputInstruction(input);
-        List<(string, string, string)> maps = InputHandler.ReadInputMap(input);
+        Dictionary<string, (string, string)> maps = InputHandler.ReadInputMap(input);
 
         long stepCount = 0;
         List<string> startsAts = GetAllNodesEndWithA(maps);
@@ -34,37 +34,30 @@ public class Processor2
 
         return stepCount;
     }
-    public static List<string> GetAllNodesEndWithA(List<(string, string, string)> maps)
+public static List<string> GetAllNodesEndWithA(Dictionary<string, (string, string)> maps)
+{
+    List<string> nodes = new List<string>();
+    foreach (var map in maps)
     {
-        List<string> nodes = new List<string>();
-        foreach (var map in maps)
+        if (map.Key.EndsWith('A'))
         {
-            if (map.Item1.EndsWith('A'))
-            {
-                nodes.Add(map.Item1);
-            }
+            nodes.Add(map.Key);
         }
-        return nodes;
     }
-    public static List<string> GetArrivedAts(List<string> startsAts, char instruction, List<(string, string, string)> maps)
-    {
-        List<string> arrivedAts = new List<string>();
-        foreach (var startsAt in startsAts)
-        {
-            // Console.WriteLine("startsAt: " + startsAt);
-            string arrivedAt = "";
+    return nodes;
+}
 
-            foreach (var map in maps)
-            {
-                if (map.Item1 == startsAt)
-                {
-                    arrivedAt = instruction == 'L' ? map.Item2 : map.Item3;
-                    // Console.WriteLine(" instruction: " + instruction + " arrivedAt: " + arrivedAt);
-                    arrivedAts.Add(arrivedAt);
-                    break;
-                }
-            }
+   public static List<string> GetArrivedAts(List<string> startsAts, char instruction, Dictionary<string, (string, string)> maps)
+{
+    var arrivedAts = new List<string>();
+    foreach (var startsAt in startsAts)
+    {
+        if (maps.TryGetValue(startsAt, out var mapping))
+        {
+            string arrivedAt = instruction == 'L' ? mapping.Item1 : mapping.Item2;
+            arrivedAts.Add(arrivedAt);
         }
-        return arrivedAts;
     }
+    return arrivedAts;
+}
 }

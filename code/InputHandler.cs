@@ -46,9 +46,9 @@ public class InputHandler
 
         return instructions;
     }
-    public static List<(string, string,string)> ReadInputMap(string input)
+    public static Dictionary<string, (string, string)> ReadInputMap(string input)
     {
-        List<(string, string,string)> maps = new List<(string, string,string)>();
+        var maps = new Dictionary<string, (string, string)>();
 
         // Split the input into rows
         string[] lines = input.Split(new[] { "\r\n\r\n", "\n\n\r\n" }, StringSplitOptions.RemoveEmptyEntries);
@@ -56,13 +56,11 @@ public class InputHandler
 
         foreach (var mapString in mapStrings)
         {
-            // Split each line into the three string parts
-            string[] parts= mapString.Split(new[] { " ", "=","(",",",")" }, StringSplitOptions.RemoveEmptyEntries);
-
-        if (parts.Length == 3)
-        {
-            maps.Add((parts[0], parts[1], parts[2]));
-        }
+            var parts = mapString.Split(new[] { " ", "=", "(", ")", "," }, StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length == 3)
+            {
+                maps[parts[0]] = (parts[1], parts[2]);
+            }
         }
 
         return maps;
